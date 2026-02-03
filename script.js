@@ -90,7 +90,7 @@ yesBtn.addEventListener("click", async () => {
 
     <!-- Dancing dog -->
     <img 
-      src="dog.gif" 
+      src="ai-dog-ai-dog-dance.gif" 
       alt="dancing dog"
       style="
         width: 200px;
