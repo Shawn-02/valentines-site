@@ -66,6 +66,81 @@ function sprinkleConfetti(count = 90) {
   setTimeout(() => (confetti.innerHTML = ""), 2500);
 }
 
+// ====== Reservation screen ======
+function showReservations() {
+  card.innerHTML = `
+    <div class="hearts">📍 💖 📍</div>
+    <h1>Pick our reservation 😌</h1>
+    <p class="sub">Choose one:</p>
+
+    <div style="
+      display:flex;
+      gap:24px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:18px;
+    ">
+      <!-- Reservation 1 -->
+      <div style="text-align:center;">
+        <img
+          id="res1"
+          src="reservation1.jpeg"
+          alt="Hudson House Post Oak"
+          style="
+            width: 220px;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+          "
+        />
+        <p style="margin-top:10px; font-weight:700;">
+          Hudson House Post Oak
+        </p>
+      </div>
+
+      <!-- Reservation 2 -->
+      <div style="text-align:center;">
+        <img
+          id="res2"
+          src="reservation2.jpeg"
+          alt="Handies Douzo"
+          style="
+            width: 220px;
+            border-radius: 16px;
+            cursor: pointer;
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+          "
+        />
+        <p style="margin-top:10px; font-weight:700;">
+          Handies Douzo
+        </p>
+      </div>
+    </div>
+
+    <p class="small" style="margin-top:16px;">
+      Tap one to lock it in 🔒
+    </p>
+  `;
+
+  const sendChoice = (choice) => {
+    const subject = encodeURIComponent("Valentine reservation choice 💘");
+    const body = encodeURIComponent(
+      `She chose: ${choice}\n\nFrom: ${window.location.href}`
+    );
+
+    // opens THEIR email app pre-filled to you
+    window.location.href = `mailto:ishansunesara@gmail.com?subject=${subject}&body=${body}`;
+  };
+
+  document.getElementById("res1").addEventListener("click", () =>
+    sendChoice("Hudson House Post Oak")
+  );
+
+  document.getElementById("res2").addEventListener("click", () =>
+    sendChoice("Handies Douzo")
+  );
+}
+
 // ====== YES click ======
 yesBtn.addEventListener("click", async () => {
   try {
@@ -81,31 +156,20 @@ yesBtn.addEventListener("click", async () => {
 
   card.innerHTML = `
     <div class="hearts">🎉 💖 🎉</div>
-
     <h1>YAYYYYY 😭💘</h1>
-
     <p class="sub"><strong>I SEE KAREEM I SEE KAREEM</strong></p>
-
     <p class="small">Now there’s no going back 😌</p>
 
-    <!-- Dancing dog -->
     <img 
       src="dog.gif" 
       alt="dancing dog"
-      style="
-        width: 200px;
-        margin: 18px auto;
-        display: block;
-        border-radius: 12px;
-      "
+      style="width: 200px; margin: 18px auto; display: block; border-radius: 12px;"
     />
 
-    <button class="btn yes" id="again">Replay 🔁</button>
+    <button class="btn yes" id="next">Next ➜</button>
   `;
 
-  document
-    .getElementById("again")
-    .addEventListener("click", () => location.reload());
+  document.getElementById("next").addEventListener("click", showReservations);
 });
 
 // ====== Pause music if tab is hidden ======
