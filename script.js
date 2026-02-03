@@ -1,10 +1,11 @@
+// ====== Grab elements ======
 const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const confetti = document.getElementById("confetti");
 const music = document.getElementById("bg-music");
 
-// ✅ Name from URL: ?name=Sarah
+// ====== Personalize name from URL (?name=Sarah) ======
 const params = new URLSearchParams(window.location.search);
 const name = params.get("name");
 if (name) {
@@ -13,6 +14,7 @@ if (name) {
   if (nameEl) nameEl.textContent = safe;
 }
 
+// ====== No button dodge logic ======
 let dodgeLevel = 1;
 
 function rand(min, max) {
@@ -34,24 +36,33 @@ function moveNoButton() {
   noBtn.style.top = `${y}px`;
 
   // 😈 gets harder each time
-  dodgeLevel = Math.min(dodgeLevel + 1, 6);
-  noBtn.style.transform = `scale(${Math.max(0.85, 1 - dodgeLevel * 0.03)})`;
+  dodgeLevel = Math.min(dodgeLevel + 1, 7);
+
+  // shrink slightly so it feels like it’s “running away”
+  noBtn.style.transform = `scale(${Math.max(0.82, 1 - dodgeLevel * 0.03)})`;
 }
 
 noBtn.addEventListener("mouseenter", moveNoButton);
+
+// extra evil once it ramps up
 noBtn.addEventListener("mousemove", () => {
-  // extra evil: starts dodging even before hover is “committed”
   if (dodgeLevel >= 3 && Math.random() < 0.25) moveNoButton();
 });
 
-noBtn.addEventListener("touchstart", (e) => {
-  e.preventDefault();
-  moveNoButton();
-}, { passive: false });
+// mobile tap attempt
+noBtn.addEventListener(
+  "touchstart",
+  (e) => {
+    e.preventDefault();
+    moveNoButton();
+  },
+  { passive: false }
+);
 
+// ====== Confetti ======
 function sprinkleConfetti(count = 90) {
   confetti.innerHTML = "";
-  const emojis = ["💖","💘","💗","💞","✨","😍","🌹"];
+  const emojis = ["💖", "💘", "💗", "💞", "✨", "😍", "🌹"];
 
   for (let i = 0; i < count; i++) {
     const s = document.createElement("span");
@@ -60,12 +71,23 @@ function sprinkleConfetti(count = 90) {
     s.style.animationDelay = `${Math.random() * 0.4}s`;
     confetti.appendChild(s);
   }
+
   setTimeout(() => (confetti.innerHTML = ""), 2500);
 }
 
-yesBtn.addEventListener("click", () => {
-  music.volume = 1;
-  music.play();
+// ====== Yes click ======
+yesBtn.addEventListener("click", async () => {
+  // Play music (must be triggered by click to work on mobile)
+  try {
+    if (music) {
+      music.volume = 0.8;
+      await music.play();
+    }
+  } catch (e) {
+    console.log("Audio blocked or missing file:", e);
+    // optional: show a gentle hint instead of alert
+    // alert("Music didn’t start. Check that song.mp3 is in the same folder and pushed to GitHub.");
+  }
 
   sprinkleConfetti();
 
@@ -77,6 +99,13 @@ yesBtn.addEventListener("click", () => {
     <button class="btn yes" id="again">Replay 🔁</button>
   `;
 
-  document.getElementById("again")
-    .addEventListener("click", () => location.reload());
+  document.getElementById("again").addEventListener("click", () => location.reload());
+});
+
+// ====== Optional: pause music when tab is hidden ======
+document.addEventListener("visibilitychange", () => {
+  if (!music) return;
+  if (document.hidden) {
+    music.pause();
+  }
 });
