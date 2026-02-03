@@ -66,6 +66,24 @@ function sprinkleConfetti(count = 90) {
   setTimeout(() => (confetti.innerHTML = ""), 2500);
 }
 
+// ====== Confirmation screen ======
+function showConfirmed(choice) {
+  const timeText =
+    choice === "Hudson House Post Oak"
+      ? "Sat Feb 14th 10:00 PM"
+      : "Sat Feb 14th 9:30 PM";
+
+  card.innerHTML = `
+    <div class="hearts">✅ 💖 ✅</div>
+    <h1>All set 😌</h1>
+    <p class="sub">Your reservation is confirmed for</p>
+    <p style="font-weight:800; font-size:20px; margin: 10px 0 0;">
+      ${timeText}
+    </p>
+    <p class="small" style="margin-top:16px;">See you then 💘</p>
+  `;
+}
+
 // ====== Reservation screen ======
 function showReservations() {
   card.innerHTML = `
@@ -132,8 +150,13 @@ function showReservations() {
       `She chose: ${choice}\n\nFrom: ${window.location.href}`
     );
 
-    // opens THEIR email app pre-filled to you
+    // Open THEIR email app pre-filled to you
     window.location.href = `mailto:ishansunesara@gmail.com?subject=${subject}&body=${body}`;
+
+    // Show confirmation screen after
+    setTimeout(() => {
+      showConfirmed(choice);
+    }, 500);
   };
 
   document.getElementById("res1").addEventListener("click", () =>
