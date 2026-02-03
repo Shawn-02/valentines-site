@@ -87,7 +87,9 @@ function showReservations() {
           src="reservation1.jpeg"
           alt="Hudson House Post Oak"
           style="
-            width: 220px;
+            width: 240px;
+            height: 180px;
+            object-fit: cover;
             border-radius: 16px;
             cursor: pointer;
             box-shadow: 0 12px 20px rgba(0,0,0,0.15);
@@ -105,7 +107,9 @@ function showReservations() {
           src="reservation2.jpeg"
           alt="Handies Douzo"
           style="
-            width: 220px;
+            width: 240px;
+            height: 180px;
+            object-fit: cover;
             border-radius: 16px;
             cursor: pointer;
             box-shadow: 0 12px 20px rgba(0,0,0,0.15);
