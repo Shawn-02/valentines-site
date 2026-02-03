@@ -94,7 +94,7 @@ yesBtn.addEventListener("click", async () => {
   card.innerHTML = `
     <div class="hearts">🎉 💖 🎉</div>
     <h1>YAYYYYY 😭💘</h1>
-    <p class="sub">Okay cool… I’m officially the happiest person alive.</p>
+    <p class="sub">Okay cool… I SEE KAREEM I SEE KAREEM.</p>
     <p class="small">Now there’s no going back 😌</p>
     <button class="btn yes" id="again">Replay 🔁</button>
   `;
