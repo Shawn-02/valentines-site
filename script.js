@@ -2,6 +2,7 @@ const yesBtn = document.getElementById("yes");
 const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const confetti = document.getElementById("confetti");
+const music = document.getElementById("bg-music");
 
 // ✅ Name from URL: ?name=Sarah
 const params = new URLSearchParams(window.location.search);
@@ -63,15 +64,19 @@ function sprinkleConfetti(count = 90) {
 }
 
 yesBtn.addEventListener("click", () => {
+  music.volume = 0.5;
+  music.play();
+
   sprinkleConfetti();
 
   card.innerHTML = `
     <div class="hearts">🎉 💖 🎉</div>
     <h1>YAYYYYY 😭💘</h1>
     <p class="sub">Okay cool… I’m officially the happiest person alive.</p>
-    <p class="small">Screenshot this and send it to me 😌</p>
+    <p class="small">Now there’s no going back 😌</p>
     <button class="btn yes" id="again">Replay 🔁</button>
   `;
 
-  document.getElementById("again").addEventListener("click", () => location.reload());
+  document.getElementById("again")
+    .addEventListener("click", () => location.reload());
 });
