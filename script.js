@@ -3,6 +3,17 @@ const noBtn = document.getElementById("no");
 const card = document.getElementById("card");
 const confetti = document.getElementById("confetti");
 
+// ✅ Name from URL: ?name=Sarah
+const params = new URLSearchParams(window.location.search);
+const name = params.get("name");
+if (name) {
+  const safe = name.replace(/[<>]/g, ""); // basic safety
+  const nameEl = document.getElementById("name");
+  if (nameEl) nameEl.textContent = safe;
+}
+
+let dodgeLevel = 1;
+
 function rand(min, max) {
   return Math.random() * (max - min) + min;
 }
@@ -10,37 +21,57 @@ function rand(min, max) {
 function moveNoButton() {
   const padding = 16;
   const btnRect = noBtn.getBoundingClientRect();
+
   const maxX = window.innerWidth - btnRect.width - padding;
   const maxY = window.innerHeight - btnRect.height - padding;
 
+  const x = rand(padding, Math.max(padding, maxX));
+  const y = rand(padding, Math.max(padding, maxY));
+
   noBtn.style.position = "fixed";
-  noBtn.style.left = `${rand(padding, maxX)}px`;
-  noBtn.style.top = `${rand(padding, maxY)}px`;
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+
+  // 😈 gets harder each time
+  dodgeLevel = Math.min(dodgeLevel + 1, 6);
+  noBtn.style.transform = `scale(${Math.max(0.85, 1 - dodgeLevel * 0.03)})`;
 }
 
 noBtn.addEventListener("mouseenter", moveNoButton);
-noBtn.addEventListener("touchstart", e => {
-  e.preventDefault();
-  moveNoButton();
+noBtn.addEventListener("mousemove", () => {
+  // extra evil: starts dodging even before hover is “committed”
+  if (dodgeLevel >= 3 && Math.random() < 0.25) moveNoButton();
 });
 
-function sprinkleConfetti(count = 60) {
+noBtn.addEventListener("touchstart", (e) => {
+  e.preventDefault();
+  moveNoButton();
+}, { passive: false });
+
+function sprinkleConfetti(count = 90) {
   confetti.innerHTML = "";
-  const emojis = ["💖","💘","💗","💞","✨","😍"];
+  const emojis = ["💖","💘","💗","💞","✨","😍","🌹"];
+
   for (let i = 0; i < count; i++) {
     const s = document.createElement("span");
     s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
     s.style.left = `${Math.random() * 100}vw`;
+    s.style.animationDelay = `${Math.random() * 0.4}s`;
     confetti.appendChild(s);
   }
-  setTimeout(() => confetti.innerHTML = "", 2000);
+  setTimeout(() => (confetti.innerHTML = ""), 2500);
 }
 
 yesBtn.addEventListener("click", () => {
   sprinkleConfetti();
+
   card.innerHTML = `
-    <h1>YAYYY 💘</h1>
-    <p>You just made my day 🥰</p>
-    <button class="btn yes" onclick="location.reload()">Replay 🔁</button>
+    <div class="hearts">🎉 💖 🎉</div>
+    <h1>YAYYYYY 😭💘</h1>
+    <p class="sub">Okay cool… I’m officially the happiest person alive.</p>
+    <p class="small">Screenshot this and send it to me 😌</p>
+    <button class="btn yes" id="again">Replay 🔁</button>
   `;
+
+  document.getElementById("again").addEventListener("click", () => location.reload());
 });
