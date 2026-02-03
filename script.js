@@ -64,7 +64,7 @@ function sprinkleConfetti(count = 90) {
 }
 
 yesBtn.addEventListener("click", () => {
-  music.volume = 0.5;
+  music.volume = 1;
   music.play();
 
   sprinkleConfetti();
